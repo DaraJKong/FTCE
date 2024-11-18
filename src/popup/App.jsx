@@ -1,6 +1,7 @@
 import packageJson from "/package.json";
 import ftceLogo from "/logo.svg";
 import ExtensionToggle from "/src/lib/ExtensionToggle";
+import HeroPiecesIconToggle from "/src/lib/HeroPiecesIconToggle";
 
 const { description } = packageJson;
 
@@ -13,6 +14,9 @@ export default function App() {
       </div>
       <div class="w-full px-6 py-3">
         <ExtensionToggle />
+      </div>
+      <div class="w-full px-6 py-3">
+        <HeroPiecesIconToggle />
       </div>
       <div class="w-full flex justify-center px-6 border-t border-neutral">
         <button class="btn btn-link text-accent" onclick={() => chrome.runtime.openOptionsPage()}>

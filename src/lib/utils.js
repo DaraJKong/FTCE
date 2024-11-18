@@ -57,12 +57,13 @@ const watchElement = function (
   return observer;
 };
 
-const injectCSS = function (css) {
+const injectCSS = function (id, css) {
   let head = document.head || document.getElementsByTagName("head")[0],
     style = document.createElement("style");
 
   head.appendChild(style);
 
+  style.id = id;
   style.type = "text/css";
   if (style.styleSheet) {
     // This is required for IE8 and below.
