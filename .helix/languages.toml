@@ -1,0 +1,60 @@
+[language-server.typescript-language-server]
+command = "bunx"
+args = ["--bun", "typescript-language-server", "--stdio"]
+
+[language-server.svelteserver]
+command = "bunx"
+args = ["--bun", "svelteserver", "--stdio"]
+
+[language-server.tailwindcss-ls]
+command = "bunx"
+args = ["--bun", "tailwindcss-language-server", "--stdio"]
+
+[language-server.vscode-html-language-server]
+command = "bunx"
+args = ["--bun", "vscode-html-language-server", "--stdio"]
+
+[language-server.vscode-css-language-server]
+command = "bunx"
+args = ["--bun", "vscode-css-language-server", "--stdio"]
+
+[language-server.vscode-json-language-server]
+command = "bunx"
+args = ["--bun", "vscode-json-language-server", "--stdio"]
+
+[[language]]
+name = "html"
+formatter = { command = "prettier", args = ["--parser", "html"] }
+
+[[language]]
+name = "css"
+formatter = { command = "prettier", args = ["--parser", "css"] }
+
+[[language]]
+name = "javascript"
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "typescript"
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "jsx"
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "tsx"
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "json"
+formatter = { command = "prettier", args = ["--parser", "json"] }
+
+[[language]]
+name = "yaml"
+formatter = { command = "prettier", args = ["--parser", "yaml"] }
+auto-format = true
