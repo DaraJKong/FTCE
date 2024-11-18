@@ -1,5 +1,3 @@
-import Router from "./router/router";
-
 let tabId;
 let currentUrl;
 
@@ -8,8 +6,6 @@ chrome.webRequest.onCompleted.addListener(
     if (!tabId) {
       update(details);
     }
-
-    Router.sendReady(currentUrl, details.url, tabId);
   },
   {
     urls: ["https://faptitans.com/*"],

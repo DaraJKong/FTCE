@@ -1,3 +1,1 @@
-import Router from "./router/router";
-
-Router.listenMessages();
+console.log("FTCE - Initialization");
