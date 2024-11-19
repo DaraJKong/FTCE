@@ -2,10 +2,6 @@
 command = "bunx"
 args = ["--bun", "typescript-language-server", "--stdio"]
 
-[language-server.svelteserver]
-command = "bunx"
-args = ["--bun", "svelteserver", "--stdio"]
-
 [language-server.tailwindcss-ls]
 command = "bunx"
 args = ["--bun", "tailwindcss-language-server", "--stdio"]
