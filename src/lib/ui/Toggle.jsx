@@ -1,6 +1,6 @@
 import { createResource, createEffect, mergeProps, Switch, Match, Suspense } from "solid-js";
 
-export default function ExtensionToggle(props) {
+export default function Toggle(props) {
   const finalProps = mergeProps({ dataDefault: true }, props);
 
   const fetchBool = async () => {
