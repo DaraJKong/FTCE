@@ -10,6 +10,22 @@ const SKILL_LOCKS = [
   { name: "Amaya Karasu", lvl: 75 },
 ];
 
+class FapLocation {
+  constructor(path, world) {
+    this.path = path;
+    this.world = world;
+  }
+
+  static get LOCATION_NAMES() {
+    return ["Earthworld", "Underworld", "Darkworld"];
+  }
+
+  static get current() {
+    let world_id = document.querySelector("#root div.main").className.match(/(?<=world)\d+/g)[0];
+    return new FapLocation(window.location.pathname, FapLocation.LOCATION_NAMES[parseInt(world_id)]);
+  }
+}
+
 class FapNumber {
   constructor(coefficient, mantissa) {
     this.coefficient = coefficient;
@@ -52,6 +68,17 @@ class FapNumber {
     return new FapNumber(coefficient, m + deltaM);
   }
 
+  sub(other) {
+    let deltaM = this.mantissa - other.mantissa;
+    let coefficient = this.coefficient * Math.pow(10, deltaM) - other.coefficient;
+
+    return FapNumber.fromScientific(coefficient, other.mantissa);
+  }
+
+  div(other) {
+    return FapNumber.fromNumber((this.coefficient / other.coefficient) * Math.pow(10, this.mantissa - other.mantissa));
+  }
+
   toStr(p = 3) {
     let suffix = ((this.mantissa - 3) % (FapNumber.FAP_SCALE.length * 3)) / 3;
     let megaSuffix = Math.floor((this.mantissa - 3) / (FAP_SCALE.length * 3));
@@ -63,27 +90,53 @@ class FapNumber {
     );
   }
 
-  scientific(p = 3) {
-    return this.coefficient.toPrecision(p) + (this.mantissa ? " x 10^" + this.mantissa : "");
-  }
-
-  eNotation(p = 3) {
-    return this.coefficient.toPrecision(p) + (this.mantissa ? "e" + this.mantissa : "");
-  }
-
-  number() {
+  toNumber() {
     return this.coefficient * Math.pow(10, this.mantissa);
   }
 
-  sub(other) {
-    let deltaM = this.mantissa - other.mantissa;
-    let coefficient = this.coefficient * Math.pow(10, deltaM) - other.coefficient;
-
-    return FapNumber.fromScientific(coefficient, other.mantissa);
+  toScientific(p = 3) {
+    return this.coefficient.toPrecision(p) + (this.mantissa ? " x 10^" + this.mantissa : "");
   }
 
-  div(other) {
-    return FapNumber.fromNumber((this.coefficient / other.coefficient) * Math.pow(10, this.mantissa - other.mantissa));
+  toENotation(p = 3) {
+    return this.coefficient.toPrecision(p) + (this.mantissa ? "e" + this.mantissa : "");
+  }
+}
+
+class Hero {
+  constructor(elem) {
+    this.elem = elem;
+    this.name = elem.querySelector("div.hero-name").textContent;
+  }
+
+  get btn() {
+    let btn = this.elem.querySelector("div.color-btn:not(.disabled)");
+    return btn ? btn.children[0] : null;
+  }
+
+  get abilityBtn() {
+    let ability = this.elem.querySelector("div.hero-abil-icon");
+    return ability ? ability.children[0] : null;
+  }
+
+  get lvl() {
+    return parseInt(this.elem.querySelector("div.hero-level").textContent);
+  }
+
+  get dps() {
+    return FapNumber.fromStr(this.elem.querySelector("div.hero-dps").textContent);
+  }
+
+  get price() {
+    if (FapLocation.current.world == "Darkworld") {
+      return FapNumber.fromStr(this.elem.querySelector("span.f-dark_gold").textContent);
+    } else {
+      return FapNumber.fromStr(this.elem.querySelector("span.f-gold").textContent);
+    }
+  }
+
+  click() {
+    this.btn().click();
   }
 }
 
