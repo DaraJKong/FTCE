@@ -9,7 +9,7 @@ export default function App() {
   return (
     <main>
       <div class="w-[900px] mx-auto">
-        <div class="w-full flex items-center px-6 py-3 border-b border-neutral">
+        <div class="w-full flex items-center px-6 py-3 border-b border-neutral bg-base-100 bg-[url('/public/images/ftce_cover.jpg')] bg-cover bg-center bg-blend-multiply">
           <img src={ftceLogo} alt="logo" class="size-12 mr-4" />
           <h1 class="grow text-lg font-medium text-primary">{description}</h1>
         </div>
