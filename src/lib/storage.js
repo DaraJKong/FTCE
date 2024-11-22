@@ -2,10 +2,10 @@ import { createResource, onCleanup } from "solid-js";
 
 const makeStorage = function (name, initialValue, options = {}) {
   const defaultMapFn = Array.isArray(initialValue) ? (x) => Object.values(x[name]) : (x) => x[name];
-  options = Object.assign({ autoSync: true, mapFn: defaultMapFn }, options);
+  options = Object.assign({ storageArea: "sync", autoSync: true, mapFn: defaultMapFn }, options);
 
   const fetch = async () => {
-    return chrome.storage.sync
+    return chrome.storage[options.storageArea]
       .get({
         [name]: initialValue,
       })
@@ -17,7 +17,7 @@ const makeStorage = function (name, initialValue, options = {}) {
   const syncStorage = (data) => {
     mutate(data);
 
-    chrome.storage.sync.set({
+    chrome.storage[options.storageArea].set({
       [name]: data,
     });
   };
@@ -31,10 +31,10 @@ const makeStorage = function (name, initialValue, options = {}) {
       }
     };
 
-    chrome.storage.sync.onChanged.addListener(handleStorageChange);
+    chrome.storage[options.storageArea].onChanged.addListener(handleStorageChange);
 
     onCleanup(() => {
-      chrome.storage.sync.onChanged.removeListener(handleStorageChange);
+      chrome.storage[options.storageArea].onChanged.removeListener(handleStorageChange);
     });
   }
 

@@ -10,7 +10,7 @@ const schedule = [
 
 const pomodoro = {
   period: 3600 * 1000,
-  break: 900 * 1000
+  break: 900 * 1000,
 };
 
 const delay = {
@@ -18,11 +18,11 @@ const delay = {
   randomize: 200,
   concentration: {
     update: [15 * 1000, 300 * 1000],
-    effect: [-250, 250]
-  }
+    effect: [-250, 250],
+  },
 };
 
-const init_time_keeper = function() {
+const init_time_keeper = function () {
   return setInterval(() => {
     let now = Date.now();
 
@@ -30,7 +30,6 @@ const init_time_keeper = function() {
     let current_hour = now.getHours();
 
     if (current_hour >= today_hours[0] && current_hour < today_hours[1]) {
-      
     }
   }, 60 * 1000);
-}
+};
