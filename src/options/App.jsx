@@ -2,6 +2,7 @@ import packageJson from "/package.json";
 import ftceLogo from "/logo.svg";
 import ExtensionToggle from "/src/lib/ExtensionToggle";
 import Account from "/src/lib/Account";
+import ClearData from "/src/lib/ClearData";
 import HeroPiecesIconToggle from "/src/lib/HeroPiecesIconToggle";
 
 const { description } = packageJson;
@@ -18,7 +19,12 @@ export default function App() {
           <div role="tablist" class="tabs tabs-bordered">
             <input type="radio" name="options_tabs" role="tab" class="tab text-nowrap" aria-label="General" checked />
             <div role="tabpanel" class="tab-content bg-base-100 px-6 py-3 border-base-300 rounded-box rounded-tl-none">
-              <ExtensionToggle />
+              <div class="w-full px-6 py-3">
+                <ExtensionToggle />
+              </div>
+              <div class="w-full px-6 py-3">
+                <ClearData />
+              </div>
             </div>
             <input
               type="radio"
