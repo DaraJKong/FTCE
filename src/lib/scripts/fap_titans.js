@@ -11,18 +11,27 @@ const SKILL_LOCKS = [
 ];
 
 class FapLocation {
-  constructor(path, world) {
-    this.path = path;
+  constructor(hash, world) {
+    this.hash = hash;
     this.world = world;
   }
 
   static get LOCATION_NAMES() {
-    return ["Earthworld", "Underworld", "Darkworld"];
+    return ["earthworld", "underworld", "darkworld"];
   }
 
   static get current() {
     let world_id = document.querySelector("#root div.main").className.match(/(?<=world)\d+/g)[0];
-    return new FapLocation(window.location.pathname, FapLocation.LOCATION_NAMES[parseInt(world_id)]);
+    return new FapLocation(window.location.hash, FapLocation.LOCATION_NAMES[parseInt(world_id)]);
+  }
+
+  static worldBtn(world) {
+    return document.querySelector("div." + world + ".world-portal");
+  }
+
+  static goTo(location) {
+    window.location.href = location.hash;
+    FapLocation.worldBtn(location.world).click();
   }
 }
 
@@ -128,7 +137,7 @@ class Hero {
   }
 
   get price() {
-    if (FapLocation.current.world == "Darkworld") {
+    if (FapLocation.current.world == "darkworld") {
       return FapNumber.fromStr(this.elem.querySelector("span.f-dark_gold").textContent);
     } else {
       return FapNumber.fromStr(this.elem.querySelector("span.f-gold").textContent);
@@ -140,4 +149,4 @@ class Hero {
   }
 }
 
-export { MULTIPLIERS, MULT_KEY_CODES, SKILL_LOCKS, FapNumber };
+export { MULTIPLIERS, MULT_KEY_CODES, SKILL_LOCKS, FapLocation, FapNumber, Hero };
