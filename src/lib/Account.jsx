@@ -5,17 +5,18 @@ export default function Account() {
   // For now, assume that the account is a faptitans.com account (not nutaku.net or nutaku.com)
   const [account, syncAccount, { mutate }] = makeStorage(
     "account",
-    { username: null, password: null },
+    { username: "", password: "" },
     { storageArea: "local", autoSync: false },
   );
 
-  const [saveEnabled, setSaveEnabled] = createSignal(false);
+  const [dirty, setDirty] = createSignal(false);
+  const saveEnabled = () => dirty() && account().username.length > 0 && account().password.length > 0;
 
   const save = () => {
     chrome.storage.local.set({
       account: account(),
     });
-    setSaveEnabled(false);
+    setDirty(false);
   };
 
   return (
@@ -34,7 +35,7 @@ export default function Account() {
                 value={account().username}
                 onInput={(e) => {
                   mutate({ username: e.target.value, password: account().password });
-                  setSaveEnabled(true);
+                  setDirty(true);
                 }}
               />
             </label>
@@ -43,10 +44,10 @@ export default function Account() {
               <input
                 type="password"
                 class="w-0 grow text-primary placeholder-neutral"
-                value={account().username}
+                value={account().password}
                 onInput={(e) => {
                   mutate({ username: account().username, password: e.target.value });
-                  setSaveEnabled(true);
+                  setDirty(true);
                 }}
               />
             </label>
