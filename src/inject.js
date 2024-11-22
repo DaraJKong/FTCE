@@ -1,4 +1,4 @@
-import { injectCSS } from "/src/lib/utils";
+import { injectCSS } from "/src/lib/scripts/utils";
 import login from "/src/lib/scripts/accounts";
 
 function initialize() {

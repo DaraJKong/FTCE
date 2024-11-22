@@ -1,5 +1,5 @@
 import { mergeProps, Switch, Match, Suspense } from "solid-js";
-import { makeStorage } from "/src/lib/storage";
+import { makeStorage } from "/src/lib/scripts/storage";
 
 export default function Toggle(props) {
   props = mergeProps({ default: true, textTrue: "Activated", textFalse: "Deactivated" }, props);

@@ -1,5 +1,5 @@
 import { createSignal, Switch, Match, Suspense } from "solid-js";
-import { makeStorage } from "/src/lib/storage";
+import { makeStorage } from "/src/lib/scripts/storage";
 
 export default function Account() {
   // For now, assume that the account is a faptitans.com account (not nutaku.net or nutaku.com)
