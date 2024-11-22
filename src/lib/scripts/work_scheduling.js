@@ -8,6 +8,9 @@ const schedule = [
   [10, 15], // saturday
 ];
 
+// For development purposes
+const bypass_schedule = true;
+
 const pomodoro = {
   period: 3600 * 1000,
   break: 900 * 1000,
@@ -49,7 +52,7 @@ export default function init_time_keeper() {
     let today_hours = schedule[today.getDay()];
     let current_hour = today.getHours();
 
-    if (current_hour >= today_hours[0] && current_hour < today_hours[1]) {
+    if ((current_hour >= today_hours[0] && current_hour < today_hours[1]) || bypass_schedule) {
       punch_in();
     } else {
       punch_out();
