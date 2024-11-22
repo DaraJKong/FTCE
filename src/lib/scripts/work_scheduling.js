@@ -54,5 +54,5 @@ export default function init_time_keeper() {
     } else {
       punch_out();
     }
-  }, 60 * 1000);
+  }, 25 * 1000);
 }
