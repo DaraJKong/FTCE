@@ -1,23 +1,10 @@
-import { createResource, createEffect, mergeProps, Switch, Match, Suspense } from "solid-js";
+import { mergeProps, Switch, Match, Suspense } from "solid-js";
+import { makeStorage } from "/src/lib/storage";
 
 export default function Toggle(props) {
-  const finalProps = mergeProps({ dataDefault: true }, props);
+  props = mergeProps({ default: true, textTrue: "Activated", textFalse: "Deactivated" }, props);
 
-  const fetchBool = async () => {
-    return chrome.storage.sync
-      .get({
-        [finalProps.dataName]: finalProps.dataDefault,
-      })
-      .then((storage) => storage[finalProps.dataName]);
-  };
-
-  const syncBool = (e) => {
-    chrome.storage.sync.set({
-      [finalProps.dataName]: e.currentTarget.checked,
-    });
-  };
-
-  const [bool] = createResource(fetchBool);
+  const [bool, syncBool] = makeStorage(props.name, props.default);
 
   return (
     <Suspense fallback={<span class="loading loading-spinner loading-sm"></span>}>
@@ -27,8 +14,13 @@ export default function Toggle(props) {
         </Match>
         <Match when={bool.state == "ready"}>
           <label class="label cursor-pointer flex items-center">
-            <span class="label-text grow">{bool() ? finalProps.textTrue : finalProps.textFalse}</span>
-            <input type="checkbox" class="toggle" checked={bool()} on:change={syncBool} />
+            <span class="label-text grow text-base">{bool() ? props.textTrue : props.textFalse}</span>
+            <input
+              type="checkbox"
+              class="toggle"
+              checked={bool()}
+              on:change={(e) => syncBool(e.currentTarget.checked)}
+            />
           </label>
         </Match>
       </Switch>
