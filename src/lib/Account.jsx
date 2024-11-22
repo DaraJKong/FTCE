@@ -25,33 +25,35 @@ export default function Account() {
           <div class="badge badge-error">{account.error}</div>
         </Match>
         <Match when={account.state == "ready"}>
-          <label class="input input-bordered border-neutral flex items-center gap-2">
-            Username:
-            <input
-              type="text"
-              class="w-0 grow text-primary placeholder-neutral"
-              value={account().username}
-              onInput={(e) => {
-                mutate({ username: e.target.value, password: account().password });
-                setSaveEnabled(true);
-              }}
-            />
-          </label>
-          <label class="input input-bordered border-neutral flex items-center gap-2">
-            Password:
-            <input
-              type="password"
-              class="w-0 grow text-primary placeholder-neutral"
-              value={account().username}
-              onInput={(e) => {
-                mutate({ username: account().username, password: e.target.value });
-                setSaveEnabled(true);
-              }}
-            />
-          </label>
-          <button class="btn btn-success" on:click={save} disabled={!saveEnabled()}>
-            Save
-          </button>
+          <div class="flex flex-col">
+            <label class="input input-bordered border-neutral flex items-center gap-2 mb-4">
+              Username:
+              <input
+                type="text"
+                class="w-0 grow text-primary placeholder-neutral"
+                value={account().username}
+                onInput={(e) => {
+                  mutate({ username: e.target.value, password: account().password });
+                  setSaveEnabled(true);
+                }}
+              />
+            </label>
+            <label class="input input-bordered border-neutral flex items-center gap-2">
+              Password:
+              <input
+                type="password"
+                class="w-0 grow text-primary placeholder-neutral"
+                value={account().username}
+                onInput={(e) => {
+                  mutate({ username: account().username, password: e.target.value });
+                  setSaveEnabled(true);
+                }}
+              />
+            </label>
+            <button class="btn btn-success min-w-24 self-end mt-6" on:click={save} disabled={!saveEnabled()}>
+              Save
+            </button>
+          </div>
         </Match>
       </Switch>
     </Suspense>
