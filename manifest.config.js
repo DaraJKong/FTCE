@@ -39,4 +39,5 @@ export default defineManifest(async (env) => ({
   background: {
     service_worker: "src/background.js",
   },
+  incognito: "split",
 }));

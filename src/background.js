@@ -1,3 +1,7 @@
+import init_time_keeper from "/src/lib/scripts/work_scheduling";
+
+init_time_keeper();
+
 let tabId;
 let currentUrl;
 
