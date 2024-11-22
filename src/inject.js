@@ -1,6 +1,9 @@
 import { injectCSS } from "/src/lib/utils";
+import login from "/src/lib/scripts/accounts";
 
 function initialize() {
+  login();
+
   chrome.storage.sync
     .get({
       enabled: true,
