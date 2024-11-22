@@ -6,7 +6,7 @@ function initialize() {
   setup();
 
   // Reduces lag spike when upgrading heroes (from shlomi#0119)
-  webpackJsonp([],[(e,t,n)=>n(5).getUser().get("counters").off("add change")]);
+  webpackJsonp([], [(e, t, n) => n(5).getUser().get("counters").off("add change")]);
 }
 
 chrome.storage.sync.onChanged.addListener((changes) => {
