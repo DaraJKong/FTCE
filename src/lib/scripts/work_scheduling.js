@@ -9,7 +9,7 @@ const schedule = [
 ];
 
 // For development purposes
-const bypass_schedule = true;
+const dev_mode = true;
 
 const pomodoro = {
   period: 3600 * 1000,
@@ -47,16 +47,19 @@ function punch_out() {
 }
 
 export default function init_time_keeper() {
-  return setInterval(() => {
-    const today = new Date(Date.now());
+  return setInterval(
+    () => {
+      const today = new Date(Date.now());
 
-    let today_hours = schedule[today.getDay()];
-    let current_hour = today.getHours();
+      let today_hours = schedule[today.getDay()];
+      let current_hour = today.getHours();
 
-    if ((current_hour >= today_hours[0] && current_hour < today_hours[1]) || bypass_schedule) {
-      punch_in();
-    } else {
-      punch_out();
-    }
-  }, 25 * 1000);
+      if ((current_hour >= today_hours[0] && current_hour < today_hours[1]) || dev_mode) {
+        punch_in();
+      } else {
+        punch_out();
+      }
+    },
+    dev_mode ? 2000 : 25 * 1000,
+  );
 }
