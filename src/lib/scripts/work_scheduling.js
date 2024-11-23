@@ -27,11 +27,15 @@ const delay = {
 
 function punch_in() {
   if (chrome.extension.inIncognitoContext) {
-    chrome.tabs.query({ url: "https://faptitans.com/*" }, (tabs) => {
-      if (tabs.length == 0) {
-        console.log("Punch in");
+    chrome.storage.sync.get("enabled").then((settings) => {
+      if (settings.enabled) {
+        chrome.tabs.query({ url: "https://faptitans.com/*" }, (tabs) => {
+          if (tabs.length == 0) {
+            console.log("Punch in");
 
-        chrome.tabs.create({ url: "https://faptitans.com/login/", active: true });
+            chrome.tabs.create({ url: "https://faptitans.com/login/", active: true });
+          }
+        });
       }
     });
   }

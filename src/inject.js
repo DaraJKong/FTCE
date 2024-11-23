@@ -40,6 +40,8 @@ function setup() {
 
           task_queue = new TaskQueue([new Task("closePopup")]);
           task_queue.start();
+        } else {
+          console.log("FTCE is currently disabled in the options.");
         }
       },
       (e) => {
