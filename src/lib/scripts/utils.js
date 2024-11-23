@@ -73,4 +73,14 @@ const injectCSS = function (id, css) {
   }
 };
 
-export { waitForElm, waitForFunction, watchElement, injectCSS };
+function rnd(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function rndIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+export { waitForElm, waitForFunction, watchElement, injectCSS, rnd, rndIntInclusive };
