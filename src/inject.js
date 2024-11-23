@@ -1,12 +1,15 @@
-import { injectCSS } from "/src/lib/scripts/utils";
 import login from "/src/lib/scripts/accounts";
+import { injectCSS } from "/src/lib/scripts/utils";
+import { Task, TaskQueue } from "/src/lib/scripts/tasks";
+
+let task_queue;
 
 function initialize() {
   login();
   setup();
 
   // Reduces lag spike when upgrading heroes (from shlomi#0119)
-  webpackJsonp([], [(e, t, n) => n(5).getUser().get("counters").off("add change")]);
+  // webpackJsonp([], [(e, t, n) => n(5).getUser().get("counters").off("add change")]);
 }
 
 chrome.storage.sync.onChanged.addListener((changes) => {
@@ -34,6 +37,9 @@ function setup() {
           if (settings.hideHeroPiecesIcon) {
             injectCSS("FTCE-Styles", ".hero-pieces-icon { display: none; }");
           }
+
+          task_queue = new TaskQueue([new Task("closePopup")]);
+          task_queue.start();
         }
       },
       (e) => {
@@ -47,6 +53,10 @@ function cleanup() {
 
   for (const element of ftceElements) {
     element.remove();
+  }
+
+  if (task_queue) {
+    task_queue.stop();
   }
 
   console.clear();

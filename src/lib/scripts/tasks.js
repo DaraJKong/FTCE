@@ -1,13 +1,81 @@
-class Task {
-  constructor(name, context, action) {
+import { FapLocation } from "/src/lib/scripts/fap_titans";
+import { rndIntInclusive } from "/src/lib/scripts/utils";
+
+const TASKS = {
+  closePopup,
+};
+
+export class Task {
+  constructor(name, context = new FapLocation(), action = null) {
     this.name = name;
     this.context = context;
-    this.action = action;
+
+    if (name == "custom") {
+      this.action = () => action();
+    } else {
+      this.action = () => TASKS[name];
+    }
   }
 
-  checkContext() {}
+  checkContext() {
+    return FapLocation.current == this.context;
+  }
+
+  goToContext() {
+    FapLocation.goTo(this.context);
+  }
 
   run() {
-    this.action();
+    this.goToContext();
+    this.action()();
   }
+
+  checkAndRun() {
+    if (this.checkContext()) {
+      this.action();
+    }
+  }
+}
+
+export class TaskQueue {
+  constructor(tasks = [], delay = [1000, 5000], update = 10) {
+    this.tasks = tasks;
+    this.delay = delay;
+    this.update = update;
+
+    this.interval_id = null;
+    this.due_time = 0;
+  }
+
+  add(task) {
+    this.tasks.push(task);
+  }
+
+  processNext() {
+    if (this.tasks.length > 0) {
+      let task = this.tasks.shift();
+      task.run();
+    }
+
+    this.due_time = Date.now() + rndIntInclusive(this.delay[0], this.delay[1]);
+  }
+
+  start() {
+    this.interval_id = setInterval(() => {
+      if (Date.now() >= this.due_time) {
+        this.processNext();
+      }
+    }, this.update);
+  }
+
+  stop() {
+    clearInterval(this.interval_id);
+  }
+}
+
+function closePopup() {
+  let exitBtn =
+    document.querySelector("#popupContainer div.btn-close-x") ||
+    document.querySelector("#popupContainer div.butn.exit");
+  exitBtn.click();
 }

@@ -11,7 +11,7 @@ const SKILL_LOCKS = [
 ];
 
 class FapLocation {
-  constructor(hash, world) {
+  constructor(hash = "#/", world = "earthworld") {
     this.hash = hash;
     this.world = world;
   }
@@ -31,7 +31,12 @@ class FapLocation {
 
   static goTo(location) {
     window.location.href = location.hash;
-    FapLocation.worldBtn(location.world).click();
+
+    let world_btn = FapLocation.worldBtn(location.world);
+
+    if (world_btn) {
+      world_btn.click();
+    }
   }
 }
 

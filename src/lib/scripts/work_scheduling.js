@@ -30,6 +30,7 @@ function punch_in() {
     chrome.tabs.query({ url: "https://faptitans.com/*" }, (tabs) => {
       if (tabs.length == 0) {
         console.log("Punch in");
+
         chrome.tabs.create({ url: "https://faptitans.com/login/", active: true });
       }
     });
@@ -38,9 +39,9 @@ function punch_in() {
 
 function punch_out() {
   chrome.tabs.query({ url: "https://faptitans.com/*" }, (tabs) => {
-    let tabIds = tabs.map((tab) => tab.id);
-
     console.log("Punch out");
+
+    let tabIds = tabs.map((tab) => tab.id);
     chrome.tabs.remove(tabIds);
   });
 }
