@@ -27,12 +27,12 @@ export class Task {
 
   run() {
     this.goToContext();
-    this.action()();
+    return this.action()();
   }
 
   checkAndRun() {
     if (this.checkContext()) {
-      this.action();
+      return this.action()();
     }
   }
 }
@@ -54,7 +54,16 @@ export class TaskQueue {
   processNext() {
     if (this.tasks.length > 0) {
       let task = this.tasks.shift();
-      task.run();
+      let result = task.run();
+
+      switch (result) {
+        case "again":
+          this.tasks.unshift(task);
+          break;
+        case "duplicate":
+          this.tasks.push(task);
+          break;
+      }
     }
 
     this.due_time = Date.now() + rndIntInclusive(this.delay[0], this.delay[1]);
@@ -77,5 +86,8 @@ function closePopup() {
   let exitBtn =
     document.querySelector("#popupContainer div.btn-close-x") ||
     document.querySelector("#popupContainer div.butn.exit");
-  exitBtn.click();
+
+  if (exitBtn) {
+    exitBtn.click();
+  }
 }
