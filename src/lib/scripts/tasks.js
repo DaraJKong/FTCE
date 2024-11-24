@@ -8,16 +8,6 @@ export class Task {
     this.delay = delay;
   }
 
-  static get TASKS() {
-    return {
-      closePopup: new Task(closePopup),
-    };
-  }
-
-  static new(name) {
-    return this.TASKS[name];
-  }
-
   static pause(delay) {
     return new Task(Function.prototype, new FapLocation(), delay);
   }
@@ -60,16 +50,6 @@ export class Worker {
       continue: true,
       tasks: [],
     };
-  }
-
-  static get WORKERS() {
-    return {
-      checkPopup: new Worker(checkPopup),
-    };
-  }
-
-  static new(name) {
-    return this.WORKERS[name];
   }
 
   run() {
@@ -145,29 +125,5 @@ export class TaskQueue {
 
   stop() {
     clearInterval(this.interval_id);
-  }
-}
-
-function checkPopup() {
-  let result = Worker.DEFAULT_RESULT;
-
-  let popup = document.querySelector("#popupContainer");
-
-  if (popup) {
-    result.tasks = [Task.new("closePopup")];
-  } else {
-    result.continue = false;
-  }
-
-  return result;
-}
-
-function closePopup() {
-  let exitBtn =
-    document.querySelector("#popupContainer div.btn-close-x") ||
-    document.querySelector("#popupContainer div.butn.exit");
-
-  if (exitBtn) {
-    exitBtn.click();
   }
 }

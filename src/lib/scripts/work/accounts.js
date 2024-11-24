@@ -1,7 +1,7 @@
-export default function login() {
-  const location = window.location;
+import { Task } from "/src/lib/scripts/tasks";
 
-  if (location.pathname.startsWith("/login")) {
+export const login = new Task(() => {
+  if (window.location.pathname.startsWith("/login")) {
     chrome.storage.local.get("account").then((storage) => {
       if (storage.account) {
         document.querySelector("input[name=username]").value = storage.account.username;
@@ -10,4 +10,4 @@ export default function login() {
       }
     });
   }
-}
+});

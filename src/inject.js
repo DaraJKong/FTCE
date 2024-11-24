@@ -1,11 +1,10 @@
-import login from "/src/lib/scripts/accounts";
 import { injectCSS } from "/src/lib/scripts/utils";
 import { Task, Worker, TaskQueue } from "/src/lib/scripts/tasks";
+import { checkPopup, login } from "/src/lib/scripts/work/prelude";
 
 let task_queue;
 
 function initialize() {
-  login();
   setup();
 
   // Reduces lag spike when upgrading heroes (from shlomi#0119)
@@ -38,7 +37,7 @@ function setup() {
             injectCSS("FTCE-Styles", ".hero-pieces-icon { display: none; }");
           }
 
-          task_queue = new TaskQueue([Worker.new("checkPopup")]);
+          task_queue = new TaskQueue([checkPopup], [login]);
           task_queue.start();
         } else {
           console.log("FTCE is currently disabled in the options.");
