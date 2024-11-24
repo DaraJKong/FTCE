@@ -49,6 +49,10 @@ export class Worker {
     return {
       continue: true,
       tasks: [],
+      workers: {
+        start: [],
+        end: [],
+      },
     };
   }
 
@@ -78,12 +82,15 @@ export class TaskQueue {
       let result = worker.run();
 
       this.tasks.push(...result.tasks);
+      this.workers.push(...result.workers.end);
 
       if (result.continue) {
         this.workers.unshift(worker);
       } else {
         this.tasks.push(Task.pause(this.delay));
       }
+
+      this.workers.unshift(...result.workers.start);
     }
   }
 
