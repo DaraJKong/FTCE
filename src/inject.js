@@ -1,6 +1,7 @@
 import { injectCSS } from "/src/lib/scripts/utils";
 import { Task, Worker, TaskQueue } from "/src/lib/scripts/tasks";
 import { checkPopup, login } from "/src/lib/scripts/work/prelude";
+import { checkOrders } from "./lib/scripts/work/clans";
 
 let task_queue;
 
@@ -37,7 +38,7 @@ function setup() {
             injectCSS("FTCE-Styles", ".hero-pieces-icon { display: none; }");
           }
 
-          task_queue = new TaskQueue([checkPopup], [login]);
+          task_queue = new TaskQueue([checkPopup, checkOrders], [login]);
           task_queue.start();
         } else {
           console.log("FTCE is currently disabled in the options.");
