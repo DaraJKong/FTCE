@@ -11,7 +11,7 @@ const SKILL_LOCKS = [
 ];
 
 class FapLocation {
-  constructor(hash = "#/", world = "earthworld") {
+  constructor(hash = "*", world = "*") {
     this.hash = hash;
     this.world = world;
   }
@@ -29,14 +29,29 @@ class FapLocation {
     return document.querySelector("div." + world + ".world-portal");
   }
 
+  static check(location) {
+    let current = FapLocation.current;
+
+    let correct_hash = current.hash == location.hash || location.hash == "*";
+    let correct_world = current.world == location.world || location.world == "*";
+
+    return correct_hash && correct_world;
+  }
+
   static goTo(location) {
-    window.location.href = location.hash;
-
-    let world_btn = FapLocation.worldBtn(location.world);
-
-    if (world_btn) {
-      world_btn.click();
+    if (location.hash != "*") {
+      window.location.href = location.hash;
     }
+
+    if (location.world != "*") {
+      let world_btn = FapLocation.worldBtn(location.world);
+
+      if (world_btn) {
+        world_btn.click();
+      }
+    }
+
+    return this.check(location);
   }
 }
 
