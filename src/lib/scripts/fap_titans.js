@@ -22,11 +22,11 @@ class FapLocation {
 
   static get current() {
     let world_id = document.querySelector("#root div.main").className.match(/(?<=world)\d+/g)[0];
-    return new FapLocation(window.location.hash, FapLocation.LOCATION_NAMES[parseInt(world_id)]);
+    return new FapLocation(window.location.hash, this.LOCATION_NAMES[parseInt(world_id)]);
   }
 
   static check(location) {
-    let current = FapLocation.current;
+    let current = this.current;
 
     let correct_hash = current.hash == location.hash || location.hash == "*";
     let correct_world = current.world == location.world || location.world == "*";
@@ -59,7 +59,7 @@ class FapLocation {
   }
 
   static goToByStep(location) {
-    let current = FapLocation.current;
+    let current = this.current;
 
     if (current.world != location.world) {
       this.goToWorld(location.world);
