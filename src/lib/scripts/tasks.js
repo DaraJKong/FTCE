@@ -18,16 +18,19 @@ export class Task {
   }
 
   checkContext() {
-    return FapLocation.current == this.context;
+    return FapLocation.check(this.context);
   }
 
   goToContext() {
-    FapLocation.goTo(this.context);
+    return FapLocation.goTo(this.context);
   }
 
   run() {
-    this.goToContext();
-    return this.action()();
+    if (this.goToContext()) {
+      return this.action()();
+    } else {
+      return "failed";
+    }
   }
 
   checkAndRun() {
@@ -37,8 +40,37 @@ export class Task {
   }
 }
 
+export class Worker {
+  constructor(watcher, delay = [1000, 5000]) {
+    this.watcher = watcher;
+    this.delay = delay;
+  }
+
+  static get DEFAULT_RESULT() {
+    return {
+      continue: true,
+      tasks: [],
+    };
+  }
+
+  static get WORKERS() {
+    return {
+      checkPopup,
+    };
+  }
+
+  static new(name) {
+    return new Worker(this.WORKERS[name]);
+  }
+
+  run() {
+    return this.watcher();
+  }
+}
+
 export class TaskQueue {
-  constructor(tasks = [], delay = [1000, 5000], update = 10) {
+  constructor(workers, tasks = [], delay = [1000, 5000], update = 10) {
+    this.workers = workers;
     this.tasks = tasks;
     this.delay = delay;
     this.update = update;
@@ -47,16 +79,34 @@ export class TaskQueue {
     this.due_time = 0;
   }
 
-  add(task) {
+  addWorker(worker) {
+    this.workers.push(worker);
+  }
+
+  processWorker() {
+    if (this.workers.length > 0) {
+      let worker = this.workers.shift();
+      let result = worker.run();
+
+      this.tasks.push(...result.tasks);
+
+      if (result.continue) {
+        this.workers.unshift(worker);
+      }
+    }
+  }
+
+  addTask(task) {
     this.tasks.push(task);
   }
 
-  processNext() {
+  processTask() {
     if (this.tasks.length > 0) {
       let task = this.tasks.shift();
       let result = task.run();
 
       switch (result) {
+        case "failed":
         case "again":
           this.tasks.unshift(task);
           break;
@@ -64,6 +114,8 @@ export class TaskQueue {
           this.tasks.push(task);
           break;
       }
+    } else {
+      this.processWorker();
     }
 
     this.due_time = Date.now() + rndIntInclusive(this.delay[0], this.delay[1]);
@@ -72,7 +124,7 @@ export class TaskQueue {
   start() {
     this.interval_id = setInterval(() => {
       if (Date.now() >= this.due_time) {
-        this.processNext();
+        this.processTask();
       }
     }, this.update);
   }
@@ -80,6 +132,22 @@ export class TaskQueue {
   stop() {
     clearInterval(this.interval_id);
   }
+}
+
+function checkPopup() {
+  let result = Worker.DEFAULT_RESULT;
+
+  let popup = document.querySelector("#popupContainer");
+
+  if (popup) {
+    result.tasks = [new Task("closePopup")];
+  } else {
+    result.continue = false;
+  }
+
+  console.log(result);
+
+  return result;
 }
 
 function closePopup() {
