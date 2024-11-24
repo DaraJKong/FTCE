@@ -1,20 +1,20 @@
 import { FapLocation } from "/src/lib/scripts/fap_titans";
 import { rndIntInclusive } from "/src/lib/scripts/utils";
 
-const TASKS = {
-  closePopup,
-};
-
 export class Task {
-  constructor(name, context = new FapLocation(), action = null) {
-    this.name = name;
+  constructor(action, context = new FapLocation()) {
+    this.action = action;
     this.context = context;
+  }
 
-    if (name == "custom") {
-      this.action = () => action();
-    } else {
-      this.action = () => TASKS[name];
-    }
+  static get TASKS() {
+    return {
+      closePopup: new Task(closePopup),
+    };
+  }
+
+  static new(name) {
+    return this.TASKS[name];
   }
 
   checkContext() {
@@ -27,7 +27,7 @@ export class Task {
 
   run() {
     if (this.goToContext()) {
-      return this.action()();
+      return this.action();
     } else {
       return "failed";
     }
@@ -35,7 +35,7 @@ export class Task {
 
   checkAndRun() {
     if (this.checkContext()) {
-      return this.action()();
+      return this.action();
     }
   }
 }
@@ -140,7 +140,7 @@ function checkPopup() {
   let popup = document.querySelector("#popupContainer");
 
   if (popup) {
-    result.tasks = [new Task("closePopup")];
+    result.tasks = [Task.new("closePopup")];
   } else {
     result.continue = false;
   }
