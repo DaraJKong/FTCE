@@ -21,8 +21,10 @@ class FapLocation {
   }
 
   static get current() {
-    let world_id = document.querySelector("#root div.main").className.match(/(?<=world)\d+/g)[0];
-    return new FapLocation(window.location.hash, this.LOCATION_NAMES[parseInt(world_id)]);
+    let main = document.querySelector("#root div.main");
+    let world = main ? this.LOCATION_NAMES[parseInt(main.className.match(/(?<=world)\d+/g)[0])] : "none";
+
+    return new FapLocation(window.location.hash, world);
   }
 
   static check(location) {
