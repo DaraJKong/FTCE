@@ -16,15 +16,6 @@ const pomodoro = {
   break: 900 * 1000,
 };
 
-const delay = {
-  time: 500,
-  randomize: 200,
-  concentration: {
-    update: [15 * 1000, 300 * 1000],
-    effect: [-250, 250],
-  },
-};
-
 function punch_in() {
   if (chrome.extension.inIncognitoContext) {
     chrome.storage.sync.get("enabled").then((settings) => {

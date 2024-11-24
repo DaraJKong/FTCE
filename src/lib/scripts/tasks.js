@@ -2,9 +2,10 @@ import { FapLocation } from "/src/lib/scripts/fap_titans";
 import { rndIntInclusive } from "/src/lib/scripts/utils";
 
 export class Task {
-  constructor(action, context = new FapLocation()) {
+  constructor(action, context = new FapLocation(), delay = [250, 750]) {
     this.action = action;
     this.context = context;
+    this.delay = delay;
   }
 
   static get TASKS() {
@@ -15,6 +16,14 @@ export class Task {
 
   static new(name) {
     return this.TASKS[name];
+  }
+
+  static pause(delay) {
+    return new Task(Function.prototype, new FapLocation(), delay);
+  }
+
+  schedule() {
+    return Date.now() + rndIntInclusive(this.delay[0], this.delay[1]);
   }
 
   checkContext() {
@@ -92,6 +101,8 @@ export class TaskQueue {
 
       if (result.continue) {
         this.workers.unshift(worker);
+      } else {
+        this.tasks.push(Task.pause(this.delay));
       }
     }
   }
@@ -114,11 +125,15 @@ export class TaskQueue {
           this.tasks.push(task);
           break;
       }
-    } else {
+    }
+
+    if (this.tasks.length == 0) {
       this.processWorker();
     }
 
-    this.due_time = Date.now() + rndIntInclusive(this.delay[0], this.delay[1]);
+    if (this.tasks.length > 0) {
+      this.due_time = this.tasks[0].schedule();
+    }
   }
 
   start() {
@@ -144,8 +159,6 @@ function checkPopup() {
   } else {
     result.continue = false;
   }
-
-  console.log(result);
 
   return result;
 }
