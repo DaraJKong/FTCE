@@ -31,14 +31,14 @@ export class Task {
   }
 
   goToContext() {
-    return FapLocation.goTo(this.context);
+    return FapLocation.goToByStep(this.context);
   }
 
   run() {
     if (this.goToContext()) {
       return this.action();
     } else {
-      return "failed";
+      return "again";
     }
   }
 
@@ -117,7 +117,6 @@ export class TaskQueue {
       let result = task.run();
 
       switch (result) {
-        case "failed":
         case "again":
           this.tasks.unshift(task);
           break;
