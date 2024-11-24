@@ -25,10 +25,6 @@ class FapLocation {
     return new FapLocation(window.location.hash, FapLocation.LOCATION_NAMES[parseInt(world_id)]);
   }
 
-  static worldBtn(world) {
-    return document.querySelector("div." + world + ".world-portal");
-  }
-
   static check(location) {
     let current = FapLocation.current;
 
@@ -38,17 +34,37 @@ class FapLocation {
     return correct_hash && correct_world;
   }
 
-  static goTo(location) {
-    if (location.hash != "*") {
-      window.location.href = location.hash;
+  static goToHash(hash) {
+    if (hash != "*") {
+      window.location.href = hash;
     }
+  }
 
-    if (location.world != "*") {
-      let world_btn = FapLocation.worldBtn(location.world);
+  static goToWorld(world) {
+    if (world != "*") {
+      window.location.href = "#/";
+      let worldBtn = document.querySelector("div." + world + ".world-portal");
 
-      if (world_btn) {
-        world_btn.click();
+      if (worldBtn) {
+        worldBtn.click();
       }
+    }
+  }
+
+  static goTo(location) {
+    this.goToWorld(location.world);
+    this.goToHash(location.hash);
+
+    return this.check(location);
+  }
+
+  static goToByStep(location) {
+    let current = FapLocation.current;
+
+    if (current.world != location.world) {
+      this.goToWorld(location.world);
+    } else if (current.hash != location.hash) {
+      this.goToHash(location.hash);
     }
 
     return this.check(location);
