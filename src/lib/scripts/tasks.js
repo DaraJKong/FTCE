@@ -64,12 +64,12 @@ export class Worker {
 
   static get WORKERS() {
     return {
-      checkPopup,
+      checkPopup: new Worker(checkPopup),
     };
   }
 
   static new(name) {
-    return new Worker(this.WORKERS[name]);
+    return this.WORKERS[name];
   }
 
   run() {
