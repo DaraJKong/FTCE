@@ -29,11 +29,10 @@ class FapLocation {
 
   static check(location) {
     let current = this.current;
-
-    let correct_hash = current.hash == location.hash || location.hash == "*";
-    let correct_world = current.world == location.world || location.world == "*";
-
-    return correct_hash && correct_world;
+    return (
+      (current.hash == location.hash || location.hash == "*") &&
+      (current.world == location.world || location.world == "*")
+    );
   }
 
   static goToHash(hash) {
@@ -49,8 +48,11 @@ class FapLocation {
 
       if (worldBtn) {
         worldBtn.click();
+        return true;
       }
     }
+
+    return false;
   }
 
   static goTo(location) {
@@ -63,9 +65,9 @@ class FapLocation {
   static goToByStep(location) {
     let current = this.current;
 
-    if (current.world != location.world) {
+    if (current.world != location.world && location.world != "*") {
       this.goToWorld(location.world);
-    } else if (current.hash != location.hash) {
+    } else if (current.hash != location.hash && location.hash != "*") {
       this.goToHash(location.hash);
     }
 
