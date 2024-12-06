@@ -36,7 +36,7 @@ export const doOrders = new Task(() => {
   let btn = document.querySelector("div.cw-clan-order-rew-box-all div.color-btn");
 
   if (btn) {
-    if (btn.innerText == "NEW ORDERS") {
+    if (btn.innerText == "GET NEW ORDERS") {
       btn.click();
     }
   } else {
